@@ -1,0 +1,4 @@
+ToolID,TypeID, ToolName,Brand,SKU,SerialNum,Description
+1,66,Phillips Head Screwdriver,Walt,15865423,1232565132,A screwdriver. Used for screwing things.
+2,45,Flat Head Screwdriver,Milwaukee,12345678,55123542,A flat screwdriver. Used for screwing flat things.
+3,12,Multi-Size Drill,Craftsman,87654321,45625132,A drill.

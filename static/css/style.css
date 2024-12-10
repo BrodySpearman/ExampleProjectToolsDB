@@ -1,0 +1,24 @@
+body {
+    margin: 0;
+    height: 100%;
+}
+
+h2 {
+    text-align: left;
+    display: inline-block;
+}
+
+#add-record-btn {
+    display: inline-block;
+    background-color: #444444 !important;
+    color: white;
+    margin-top: 23px;
+    margin-right: 20px;
+    padding-inline: 35px;
+}
+
+
+.tab_bar {
+    padding-top: 5px;
+}
+
