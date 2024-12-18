@@ -1,0 +1,33 @@
+{% extends "bodycontent.html" %}
+    {% block content %}
+    <div id="dialog" title="Add Records">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button type="button" class="nav-link active" id="nav-tool-tab" aria-current="page" data-bs-toggle="tab" data-bs-target="#tools" aria-controls="nav-tools" role="tab">Tools</button>
+                <button type="button" class="nav-link" id="nav-employee-tab" data-bs-toggle="tab" data-bs-target="#employees" role="tab">Employees</button>
+            </div>
+        </nav>
+
+        <div class="tab-content" id="nav-tabContent">
+          <div class="tab-pane show active" id="tools" role="tabpanel" aria-labelledby="nav-tool-tab" tabindex="0">
+
+            <label for="Name">Name</label>
+            <input type="text" class="form-control" id="partName" placeholder="Enter Name">
+
+            <label for="Type">Type</label>
+            <input type="text" class="form-control" id="partType" placeholder="Enter Type">
+
+            <label for="SKU">SKU</label>
+            <input type="text" class="form-control" id="partSku" placeholder="Enter SKU">
+
+            <label for="serialNum">Serial Number</label>
+            <input type="text" class="form-control" id="partSerialNum" placeholder="Enter Serial Number">
+
+            <label for="description">Description</label>
+            <textarea class="form-control" id="partDesc" placeholder="Enter description (optional)"></textarea>
+
+            <button type="submit" class="btn btn-primary submit-tool-data pull-right mt-3">Submit</button>
+          </div>
+        </div>
+    </div>
+    {% endblock %}

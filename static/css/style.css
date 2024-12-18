@@ -1,16 +1,22 @@
+html{
+    background-color: rgb(73, 73, 73);
+}
+
 body {
     margin: 0;
     height: 100%;
+    background-color: rgb(73, 73, 73) !important;
 }
 
 h2 {
     text-align: left;
     display: inline-block;
+    color: rgb(182, 182, 182);
 }
 
 #add-record-btn {
     display: inline-block;
-    background-color: #444444 !important;
+    background-color: #5e2f2f !important;
     color: white;
     margin-top: 23px;
     margin-right: 20px;

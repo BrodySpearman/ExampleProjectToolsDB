@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Stateline Electic Parts Database Veiwer</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+      <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+      <script src="static\script.js"></script>
+
+      <link href="https://cdn.datatables.net/v/dt/dt-2.1.8/b-3.2.0/b-colvis-3.2.0/fh-4.0.1/sc-2.4.3/sl-2.1.0/sr-1.4.1/datatables.min.css" rel="stylesheet">
+      <script src="https://cdn.datatables.net/v/dt/dt-2.1.8/b-3.2.0/b-colvis-3.2.0/fh-4.0.1/sc-2.4.3/sl-2.1.0/sr-1.4.1/datatables.min.js"></script>
+
+    </head>
+    
+    <body>
+      {% block content %}{% endblock %}
+    </body>
+</html>

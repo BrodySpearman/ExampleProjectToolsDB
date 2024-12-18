@@ -1,6 +1,29 @@
 {% extends "base.html" %}
     {% block content %}
 
+    <div class="container-fluid">
     
+      <h2>Parts Database</h2>
+      <button type="button" id="add-record-btn" class="btn btn-secondary pull-right">Add records</button>
+      {% include "diamenu.html" %}
+    </div>
+    
+    <div class="container-fluid tab_bar">
+      <ul class="nav nav-pills red">
+
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" aria-current="page" href="#1a">Tools</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#2a">Checkout</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#3a">Employees</a>
+        </li>
+
+      </ul>
+    </div>
 
     {% endblock %}
