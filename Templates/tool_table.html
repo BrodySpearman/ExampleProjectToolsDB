@@ -1,0 +1,26 @@
+{% extends "bodycontent.html" %}
+{% block content %}
+    <table id="tool_table" class="display">
+        <thead>
+            <tr>
+                {% for name in columns %}
+                    <th>{{ name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in dataset %}
+                <tr>
+                    <td>{{ row.ToolID }}</td>
+                    <td>{{ row.Type }}</td>
+                    <td>{{ row.ToolName }}</td>
+                    <td>{{ row.Brand }}</td>
+                    <td>{{ row.SKU }}</td>
+                    <td>{{ row.SerialNum }}</td>
+                    <td>{{ row.Description }}</td>
+                </tr>
+            {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

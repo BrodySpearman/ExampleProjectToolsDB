@@ -1,3 +1,12 @@
+import DataTable from 'datatables.net-dt';
+
+let table = new DataTable('#tool_table', {
+    // config options...
+});
+
+$(document).ready( function () {
+    $('#tool_table').DataTable();
+} );
 
 
 $(document).ready(function() {
