@@ -1,6 +1,6 @@
 {% extends "bodycontent.html" %}
 {% block content %}
-    <table id="tool_table" class="display">
+    <table id="tool_table" class="display display_table">
         <thead>
             <tr>
                 {% for name in columns %}
@@ -23,4 +23,9 @@
             </tr>
         </tbody>
     </table>
+    <script>
+        $(document).ready(function() {
+            $("#tool_table").DataTable();
+        });
+    </script>
 {% endblock %}

@@ -6,6 +6,8 @@ body {
     margin: 0;
     height: 100%;
     background-color: #494949 !important;
+    color: #e6e2e2;
+    letter-spacing: .5px;
 }
 
 h2 {
@@ -13,6 +15,17 @@ h2 {
     padding-left: -5px;
     display: inline-block;
     color: #e6e2e2;
+    width: 25%;
+}
+
+
+.img-responsive {
+    display: inline-block;
+    position: absolute;
+    width: auto;
+    max-height: 100px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .nav-item {
@@ -46,8 +59,14 @@ h2 {
 
 .tab_bar {
     padding-top: 5px;
+    bottom: 0px;
+    border-bottom: 3px solid #5e2f2f;
 }
 
 .ui-dialog .ui-dialog-content {
     background-color: #494949;
+}
+
+.display_table {
+    color: #e6e2e2 !important;
 }

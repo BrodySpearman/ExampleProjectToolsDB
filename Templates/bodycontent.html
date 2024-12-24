@@ -1,11 +1,17 @@
 {% extends "base.html" %}
     {% block content %}
 
-    <div class="container-fluid">
-    
+    <div class="container-fluid toppage">
+
       <h2>Parts Database</h2>
+
+      <div style="text-align:center;">
+        <img src="/static/images/Bullet_Logo_Head.png" class="img-responsive"/>
+      </div>
+
       <button type="button" id="add-record-btn" class="btn btn-secondary pull-right">Add records</button>
       {% include "diamenu.html" %}
+
     </div>
     
     <div class="container-fluid tab_bar">
@@ -22,7 +28,7 @@
         <li class="nav-item" role="presentation">
           <a class="nav-item" id="employee_tab" data-bs-toggle="pill" data-bs-target="#employee_view" aria-controls="employee_view" aria-selected="false">Employees</a>
         </li>
-
+        
       </ul>
     </div>
 
