@@ -18,24 +18,24 @@
       <ul class="nav nav-pills" id="pills-tab" role="tablist">
 
         <li class="nav-item" role="presentation">
-          <a class="nav-item" id="tool_tab" data-bs-toggle="pill" data-bs-target="#tools_view"  aria-controls="tools_view" aria-selected="true" href="tools">Tools</a>
+          <a class="nav-item" id="tools" data-bs-toggle="pill" data-bs-target="#tools_view"  aria-controls="tools_view" aria-selected="true" href="tools">Tools</a>
         </li>
 
         <li class="nav-item" role="presentation">
-          <a class="nav-item" id="checkout_tab" data-bs-toggle="pill" data-bs-target="#checkout_view" aria-controls="checkout_view" aria-selected="false">Checkout</a>
+          <a class="nav-item" id="checkout" data-bs-toggle="pill" data-bs-target="#checkout_view" aria-controls="checkout_view" aria-selected="false">Checkout</a>
         </li>
 
         <li class="nav-item" role="presentation">
-          <a class="nav-item" id="employee_tab" data-bs-toggle="pill" data-bs-target="#employee_view" aria-controls="employee_view" aria-selected="false">Employees</a>
+          <a class="nav-item" id="employees" data-bs-toggle="pill" data-bs-target="#employee_view" aria-controls="employee_view" aria-selected="false">Employees</a>
         </li>
         
       </ul>
     </div>
 
     <div class="tab-content" id="pills-tabContent">
-      <div class="tab-pane show active" id="tools_view" role="tabpanel" aria-labelledby="tool_tab">{% include "tool_table.html" %}</div>
-      <div class="tab-pane" id="checkout_view" role="tabpanel" aria-labelledby="checkout_tab"></div>
-      <div class="tab-pane" id="employee_view" role="tabpanel" aria-labelledby="employee_tab"></div>
+      <div class="tab-pane show active" id="tools_view" role="tabpanel" aria-labelledby="tools">{% include "tool_table.html" %}</div>
+      <div class="tab-pane" id="checkout_view" role="tabpanel" aria-labelledby="checkout"></div>
+      <div class="tab-pane" id="employee_view" role="tabpanel" aria-labelledby="employees"></div>
     </div>
 
     {% endblock %}

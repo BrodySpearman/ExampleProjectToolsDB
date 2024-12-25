@@ -24,6 +24,8 @@ engine = create_engine(
 conn = engine.connect()
 metadata_obj = MetaData(schema='stateline_tools_db')
 
+avail_databases = ['tool', 'employee', 'checkout']
+
 tool_table = Table(
     "tool",
     metadata_obj,
@@ -36,6 +38,11 @@ employee_table = Table(
     autoload_with=engine
 )
 
+checkout_table = Table(
+    "checkout",
+    metadata_obj,
+    autoload_with=engine
+)
 
 temp_query = "SELECT * FROM tool"
 tool_result = conn.execute(text(temp_query))
