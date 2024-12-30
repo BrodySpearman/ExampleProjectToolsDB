@@ -1,0 +1,27 @@
+{% extends "bodycontent.html" %}
+{% block content %}
+    <table id="employee_table" class="display display_table">
+        <thead>
+            <tr>
+                {% for name in columns %}
+                    <th>{{ name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in dataset %}
+                <tr>
+                    <td>{{ row.EmployeeID }}</td>
+                    <td>{{ row.FirstName }}</td>
+                    <td>{{ row.LastName }}</td>
+                </tr>
+            {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(function() {
+            $("#employee_table").DataTable();
+        });
+    </script>
+{% endblock %}

@@ -3,13 +3,13 @@
     <table id="tool_table" class="display display_table">
         <thead>
             <tr>
-                {% for name in columns %}
+                {% for name in get_table_info.columns %}
                     <th>{{ name }}</th>
                 {% endfor %}
             </tr>
         </thead>
         <tbody>
-            {% for row in dataset %}
+            {% for row in get_table_info.dataset %}
                 <tr>
                     <td>{{ row.ToolID }}</td>
                     <td>{{ row.Type }}</td>
