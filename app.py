@@ -9,7 +9,6 @@ import mysql.connector
 
 
 ### DATABASE CONNECTION ###
-
 # Delete these variables and encrypt them elsewhere soon.
 dbhost = "localhost"
 dbuser = "root"
@@ -30,7 +29,7 @@ metadata_obj = MetaData(schema='stateline_tools_db')
 
 ### TABLE INITIALIZATION ###
 
-avail_databases = ['tool', 'employee', 'checkout']
+avail_tables = ['tool', 'employee', 'checkout']
 
 tool_table = Table(
     "tool",
@@ -66,22 +65,31 @@ def get_table_info(tblnme):
     print(get_table_info.dataset)
     print(get_table_info.columns)
     
-
-### APP ROUTES ###
-
 # Flask command line operation (Windows):
 # set FLASK_APP=app
 # set FLASK_ENV=development
 # flask run
 
-@app.route('/')
+### APP ROUTES ###
+
+@app.route('/', methods = ['GET', 'POST'])
 def index():
+    return render_template('base.html')
+
+@app.route('/tools', methods = ['GET', 'POST'])
+def tool_table_show():
     get_table_info('tool')
-    return render_template('bodycontent.html', get_table_info=get_table_info)
+    return render_template('tool_table.html', get_table_info=get_table_info)
 
+@app.route('/checkouts', methods = ['GET', 'POST'])
+def checkout_table_show():
+    get_table_info('checkout')
+    return render_template('checkout_table.html', get_table_info=get_table_info)
 
-@app.route('/employees')
-def employee():
+@app.route('/employees', methods = ['GET', 'POST'])
+def employee_table_show():
     get_table_info('employee')
-    return render_template('bodycontent.html', get_table_info=get_table_info)
+    return render_template('employee_table.html', get_table_info=get_table_info)
 
+if __name__ == '__main__':
+    app.run(debug=True)
