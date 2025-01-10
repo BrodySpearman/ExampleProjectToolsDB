@@ -27,6 +27,7 @@ conn = engine.connect()
 metadata_obj = MetaData(schema='stateline_tools_db')
 
 
+
 ### TABLE INITIALIZATION ###
 
 avail_tables = ['tool', 'employee', 'checkout']

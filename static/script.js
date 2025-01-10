@@ -1,17 +1,7 @@
 $(document).ready(function() {
-    console.log("Hello! Jquery loaded in js file");
-});
+    $("#add-records-btn").click(function(){
+         
+      
 
-$(document).ready(function () {
-    //preload dialogue
-    $("#dialog").dialog({
-        autoOpen: false,
-        minWidth: 450
-    });
-
-    $("#add-record-btn").click(function () {
-        $("#dialog").dialog("open");
-    });
-});
-
-
+    })
+})

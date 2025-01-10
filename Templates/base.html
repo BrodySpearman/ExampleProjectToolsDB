@@ -29,9 +29,9 @@
           <img src="/static/images/Bullet_Logo_Head.png" class="img-responsive"/>
         </div>
   
-        <button type="button" id="add-record-btn" class="btn btn-secondary pull-right">Add records</button>
-        {% include "diamenu.html" %}
-  
+        <button type="button" id="add-record-btn" class="btn btn-secondary pull-right" data-toggle="modal" data-target="#add-record-modal">Add records</button>
+        {% include "modal.html" %}
+
       </div>
       
       <div class="container-fluid tab_bar">
@@ -52,7 +52,7 @@
         </ul>
       </div>
 
-      <div class="container-fluid table">
+      <div class="container-fluid table" id="main-table">
         {% block table %}{% endblock %}
       </div>
 
