@@ -61,14 +61,29 @@ h2 {
     padding-inline: 35px;
 }
 
+#add-record-dialog {
+    background-color: #494949 !important;
+}
+
+#header-modal {
+    max-height: 35px;
+}
+
+#modal-label span {
+    vertical-align: middle;
+}
+
+#close-btn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+
 .tab_bar {
     padding-top: 5px;
     bottom: 0px;
     border-bottom: 3px solid #5e2f2f;
-}
-
-.ui-dialog .ui-dialog-content {
-    background-color: #494949;
 }
 
 .display_table {
