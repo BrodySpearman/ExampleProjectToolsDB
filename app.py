@@ -9,7 +9,8 @@ import mysql.connector
 
 
 ### DATABASE CONNECTION ###
-# Delete these variables and encrypt them elsewhere soon.
+# Delete these variables, change and encrypt them elsewhere soon.
+
 dbhost = "localhost"
 dbuser = "root"
 dbpass = "roothost1"

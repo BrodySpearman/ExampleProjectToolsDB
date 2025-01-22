@@ -25,7 +25,14 @@
     </table>
     <script>
         $(document).ready(function() {
-            $("#tool_table").DataTable();
+            var toolTable = $('#tool_table').DataTable({
+                'processing': true,
+                'serverSide': true,
+                'serverMethod': 'post',
+                'ajax': {
+                    'url':'/ajaxfile'
+                }
+            })
         });
     </script>
 {% endblock %}
