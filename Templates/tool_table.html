@@ -8,31 +8,56 @@
                 {% endfor %}
             </tr>
         </thead>
-        <tbody>
-            {% for row in get_table_info.dataset %}
-                <tr>
-                    <td>{{ row.ToolID }}</td>
-                    <td>{{ row.Type }}</td>
-                    <td>{{ row.ToolName }}</td>
-                    <td>{{ row.Brand }}</td>
-                    <td>{{ row.SKU }}</td>
-                    <td>{{ row.SerialNum }}</td>
-                    <td>{{ row.Description }}</td>
-                </tr>
-            {% endfor %}
-            </tr>
-        </tbody>
     </table>
     <script>
+        var editor = new DataTable.Editor({
+            'ajax': {
+                'url': '/ajaxtools'
+            },
+            fields: [
+                { label: 'Tool ID', name: 'ToolID' },
+                { label: 'Type', name: 'Type' },
+                { label: 'Tool Name', name: 'ToolName' },
+                { label: 'Brand', name: 'Brand' },
+                { label: 'SKU', name: 'SKU' },
+                { label: 'Serial Num', name: 'SerialNum' },
+                { label: 'Description', name: 'Description' },
+            ],
+            table: '#tool_table'
+        });
+
         $(document).ready(function() {
             var toolTable = $('#tool_table').DataTable({
                 'processing': true,
                 'serverSide': true,
                 'serverMethod': 'post',
                 'ajax': {
-                    'url':'/ajaxfile'
+                    'url': '/ajaxtools'
+                },
+                'lengthMenu': [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+                searching: true,
+                sort: false,
+                "serverSide": true,
+                'columns': [
+                    { data: 'ToolID'},
+                    { data: 'Type'},
+                    { data: 'ToolName'},
+                    { data: 'Brand'},
+                    { data: 'SKU'},
+                    { data: 'SerialNum'},
+                    { data: 'Description'},
+                ],
+                layout: {
+                    topStart: {
+                        buttons: [
+                            { extend: 'create', editor: editor },
+                            { extend: 'edit', editor: editor },
+                            { extend: 'remove', editor: editor },
+                        ]
+                    }
                 }
-            })
+            });
+
         });
     </script>
 {% endblock %}
