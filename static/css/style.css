@@ -79,6 +79,9 @@ h2 {
     right: 0px;
 }
 
+.DTE * {
+    background-color: #494949 !important;
+}
 
 .tab_bar {
     padding-top: 5px;

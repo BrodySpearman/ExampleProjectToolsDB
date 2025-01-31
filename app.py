@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, url_for, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 
+import pymysql.cursors
 from sqlalchemy import create_engine, inspect, MetaData, Table, Column, text, select
 from sqlalchemy.engine import reflection
 from sqlalchemy.sql import func
@@ -65,6 +66,9 @@ checkout_table = Table(
 
 ### TABLE FUNCTIONS ###
 
+data = []
+
+# Old function to collect table data and column names. Needed to generate table data, but planning on phasing out. 
 def get_table_info(tblnme):
     conn = engine.connect()
     get_table_info.columns = []
@@ -113,16 +117,54 @@ def ajaxtools():
                     'Brand': row['Brand'],
                     'SKU': row['SKU'],
                     'SerialNum': row['SerialNum'],
-                    'Description': row['Description'],
+                    'Description': row['Description']
                 })
             
             response = {
                 'draw': draw,
                 'iTotalRecords': 20,
                 'iTotalDisplayRecords': 20,
-                'aaData': data,
+                'aaData': data
             }
             return jsonify(response)
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/tooladder', methods = ['POST'])
+def tooladder():
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        if request.method == 'POST':
+            data = request.get_json()
+
+            tool_id = data['ToolID']
+            tool_type = data['Type']
+            tool_name = data['ToolName']
+            brand = data['Brand']
+            sku = data['SKU']
+            serial_num = data['SerialNum']
+            description = data['Description']
+
+            cursor.execute("INSERT INTO tool (ToolID, Type, ToolName, Brand, SKU, SerialNum, Description) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                        (tool_id, tool_type, tool_name, brand, sku, serial_num, description))
+            conn.commit()
+
+            response = {
+            'data': {
+                'ToolID': tool_id,
+                'Type': tool_type,
+                'ToolName': tool_name,
+                'Brand': brand,
+                'SKU': sku,
+                'SerialNum': serial_num,
+                'Description': description
+            }
+        }
+        return jsonify(response)  
     except Exception as e:
         print(e)
     finally:
