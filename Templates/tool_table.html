@@ -3,8 +3,8 @@
     <table id="tool_table" class="display display_table">
         <thead>
             <tr>
-                {% for name in get_table_info.columns %}
-                    <th>{{ name }}</th>
+                {% for col in tool_table_cols %}
+                    <th>{{ col }}</th>
                 {% endfor %}
             </tr>
         </thead>
@@ -13,12 +13,8 @@
         $(document).ready(function() {
             var editor = new $.fn.dataTable.Editor({
                 ajax: {
-                create: {
-                    type: 'POST',
-                    url: '/tooladder',
-                    contentType: 'application/json'
-                }
-            },
+                    'url': '/get_tool_data',
+                    'type': 'POST'},
                 table: '#tool_table',
                 idSrc: 'ToolID',
                 fields: [
@@ -39,7 +35,6 @@
                 ajax: {
                     'url': '/ajaxtools'
                 },
-                lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
                 searching: true,
                 sort: false,
                 serverSide: true,
