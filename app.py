@@ -66,8 +66,6 @@ checkout_table = Table(
 
 ### TABLE FUNCTIONS ###
 
-data = []
-
 # Get the column names of a table (tblnme). 
 def get_col_names(tblnme):
     conn = engine.connect()
@@ -82,29 +80,49 @@ def get_col_names(tblnme):
     conn.close()
     return columns
 
-def get_table_data(tblenme):
-    conn = engine.connect()
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
-    data = []
+# Retrieve data from db and draw table on the client side.
+def draw_table(tblenme):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        if request.method == 'POST':
+            draw = request.form['draw']
+            print(draw)
 
-    cursor.execute(f"SELECT * FROM {tblenme}")
-    datalist = cursor.fetchall()
-    tblclms = get_col_names(tblenme)
+            cursor.execute(f"SELECT * FROM {tblenme}")
+            datalist = cursor.fetchall()
+            tblclms = get_col_names(tblenme)
 
-    for row in datalist:
-        data.append({
-            tblclms[0]: row[tblclms[0]],
-            tblclms[1]: row[tblclms[1]],
-            tblclms[2]: row[tblclms[2]],
-            tblclms[3]: row[tblclms[3]],
-            tblclms[4]: row[tblclms[4]],
-            tblclms[5]: row[tblclms[5]],
-            tblclms[6]: row[tblclms[6]]
-        })
-    
-    return data
-    
-    
+            data = []
+
+            if tblenme == 'tool':
+                for row in datalist:
+                    
+                    data.append({
+                        tblclms[0]: row[tblclms[0]],
+                        tblclms[1]: row[tblclms[1]],
+                        tblclms[2]: row[tblclms[2]],
+                        tblclms[3]: row[tblclms[3]],
+                        tblclms[4]: row[tblclms[4]],
+                        tblclms[5]: row[tblclms[5]],
+                        tblclms[6]: row[tblclms[6]]
+                    }) 
+            
+            response = {
+                'draw': draw,
+                'iTotalRecords': 20,
+                'iTotalDisplayRecords': 20,
+                'aaData': data
+            }
+            
+            return jsonify(response)
+
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
+      
 
 ### APP ROUTES ###
 
@@ -119,62 +137,52 @@ def tool_table_show():
 
 @app.route('/ajaxtools', methods = ['GET', 'POST'])
 def ajaxtools():
-    try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
-        if request.method == 'POST':
-            draw = request.form['draw']
-            print(draw)
-
-            cursor.execute("SELECT * FROM tool")
-            tool_list = cursor.fetchall()
-
-            data = []
-            for row in tool_list:
-                data.append({
-                    'ToolID': row['ToolID'],
-                    'Type': row['Type'],
-                    'ToolName': row['ToolName'],
-                    'Brand': row['Brand'],
-                    'SKU': row['SKU'],
-                    'SerialNum': row['SerialNum'],
-                    'Description': row['Description']
-                })
-            
-            response = {
-                'draw': draw,
-                'iTotalRecords': 20,
-                'iTotalDisplayRecords': 20,
-                'aaData': data
-            }
-            return jsonify(response)
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        conn.close()
+    return draw_table('tool')
 
 @app.route('/create_new_tool', methods = ['GET', 'POST'])
-def get_tool_data():
+def create_new_tool():
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         if request.method == 'POST':
-            pass
-            # the client side will send a form with the html parameter 'action' (string) and 'data' (object).
-            # the 'action' parameter will determine what the server will do with the data (create). "action  = create"
-            # the 'data' parameter will contain the data object, with data to be inserted into the database.  "data[0][column]  = data_val"
-            # The server will update the database with the new row and return the new row's data to the client.
-            # the response will be an object containing the new row's data.
-            # an example of the data object is as follows: "data": [{"Type": "Hand Tool", "ToolName": "Hammer", "Brand": "Stanley", "SKU": "STAN-123", "SerialNum": "123456", "Description": "A hammer"}]
-            # after the the response is sent back to the client, the client will update the table with the new row.
+
+            # Client form example (ImmutableMultiDict):
+            # ([('data[0][Type]', 'value'), ('data[0][ToolName]', 'value'), ('data[0][Brand]', 'value'), ('data[0][SKU]', 'value'), ('data[0][SerialNum]', 'value'), ('data[0][Description]', 'value'), ('action', 'create')])
+            data = request.form.to_dict(flat=False)
+            print(data)
+
+            cursor.execute(f"""INSERT INTO tool (ToolID, Type, ToolName, Brand, SKU, SerialNum, Description) 
+                            VALUES 
+                            ({data['data[0][ToolID]']},
+                            '{data['data[0][Type]']}',
+                            '{data['data[0][ToolName]']}',
+                            '{data['data[0][Brand]']}',
+                            '{data['data[0][SKU]']}',
+                            '{data['data[0][SerialNum]']}',
+                            '{data['data[0][Description]']}')""")
+            conn.commit()
+            
+            new_data = {
+                'ToolID': data['data[0][ToolID]'],
+                'Type': data['data[0][Type]'],
+                'ToolName': data['data[0][ToolName]'],
+                'Brand': data['data[0][Brand]'],
+                'SKU': data['data[0][SKU]'],
+                'SerialNum': data['data[0][SerialNum]'],
+                'Description': data['data[0][Description]']
+            }
+
+            response = {
+                'data': new_data
+            }
+
+            return jsonify(response)
 
     except Exception as e:
         print(e)
     finally:
         cursor.close()
         conn.close()
-
 
 @app.route('/checkouts', methods = ['GET', 'POST'])
 def checkout_table_show():

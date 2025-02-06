@@ -13,10 +13,13 @@
         $(document).ready(function() {
             var editor = new $.fn.dataTable.Editor({
                 ajax: {
-                    'url': '/get_tool_data',
-                    'type': 'POST'},
+                    create: {
+                        type: 'POST',
+                        url: '/create_new_tool',
+                        
+                    }
+                },
                 table: '#tool_table',
-                idSrc: 'ToolID',
                 fields: [
                     { label: 'ToolID', name: 'ToolID' },
                     { label: 'Type', name: 'Type' },
