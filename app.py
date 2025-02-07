@@ -97,7 +97,6 @@ def draw_table(tblenme):
 
             if tblenme == 'tool':
                 for row in datalist:
-                    
                     data.append({
                         tblclms[0]: row[tblclms[0]],
                         tblclms[1]: row[tblclms[1]],
@@ -106,7 +105,25 @@ def draw_table(tblenme):
                         tblclms[4]: row[tblclms[4]],
                         tblclms[5]: row[tblclms[5]],
                         tblclms[6]: row[tblclms[6]]
-                    }) 
+                    })
+            
+            if tblenme == 'employee':
+                for row in datalist:
+                    data.append({
+                        tblclms[0]: row[tblclms[0]],
+                        tblclms[1]: row[tblclms[1]],
+                        tblclms[2]: row[tblclms[2]]
+                    })
+
+            if tblenme == 'checkout':
+                for row in datalist:
+                    data.append({
+                        tblclms[0]: row[tblclms[0]],
+                        tblclms[1]: row[tblclms[1]],
+                        tblclms[2]: row[tblclms[2]],
+                        tblclms[3]: row[tblclms[3]],
+                        tblclms[4]: row[tblclms[4]]
+                    })
             
             response = {
                 'draw': draw,
@@ -139,27 +156,27 @@ def tool_table_show():
 def ajaxtools():
     return draw_table('tool')
 
+# Called through tool_table.html
 @app.route('/create_new_tool', methods = ['GET', 'POST'])
 def create_new_tool():
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         if request.method == 'POST':
-
             # Client form example (ImmutableMultiDict):
             # ([('data[0][Type]', 'value'), ('data[0][ToolName]', 'value'), ('data[0][Brand]', 'value'), ('data[0][SKU]', 'value'), ('data[0][SerialNum]', 'value'), ('data[0][Description]', 'value'), ('action', 'create')])
-            data = request.form.to_dict(flat=False)
+            data = request.form.to_dict(flat=True)
             print(data)
 
             cursor.execute(f"""INSERT INTO tool (ToolID, Type, ToolName, Brand, SKU, SerialNum, Description) 
                             VALUES 
-                            ({data['data[0][ToolID]']},
-                            '{data['data[0][Type]']}',
-                            '{data['data[0][ToolName]']}',
-                            '{data['data[0][Brand]']}',
-                            '{data['data[0][SKU]']}',
-                            '{data['data[0][SerialNum]']}',
-                            '{data['data[0][Description]']}')""")
+                            ({str(data['data[0][ToolID]'])},
+                            '{str(data['data[0][Type]'])}',
+                            '{str(data['data[0][ToolName]'])}',
+                            '{str(data['data[0][Brand]'])}',
+                            '{str(data['data[0][SKU]'])}',
+                            '{str(data['data[0][SerialNum]'])}',
+                            '{str(data['data[0][Description]'])}')""")
             conn.commit()
             
             new_data = {
@@ -186,15 +203,22 @@ def create_new_tool():
 
 @app.route('/checkouts', methods = ['GET', 'POST'])
 def checkout_table_show():
-
     checkout_table_cols = get_col_names('checkout')
     return render_template('checkout_table.html', checkout_table_cols=checkout_table_cols)
 
+@app.route('/ajaxcheckouts', methods = ['GET', 'POST'])
+def ajaxcheckouts():
+    return draw_table('checkout')
+
 @app.route('/employees', methods = ['GET', 'POST'])
 def employee_table_show():
-
     employee_table_cols = get_col_names('employee')
-    return render_template('employee_table.html', checkout_table_cols=employee_table_cols)
+    return render_template('employee_table.html', employee_table_cols=employee_table_cols)
+
+@app.route('/ajaxemployees', methods = ['GET', 'POST'])
+def ajaxemployees():
+    return draw_table('employee')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

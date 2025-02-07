@@ -8,20 +8,49 @@
                 {% endfor %}
             </tr>
         </thead>
-        <tbody>
-            {% for row in get_table_info.dataset %}
-                <tr>
-                    <td>{{ row.EmployeeID }}</td>
-                    <td>{{ row.FirstName }}</td>
-                    <td>{{ row.LastName }}</td>
-                </tr>
-            {% endfor %}
-            </tr>
-        </tbody>
     </table>
     <script>
-        $(document).ready(function() {
-            $("#employee_table").DataTable();
+    $(document).ready(function() {
+        var editor = new $.fn.dataTable.Editor({
+            ajax: {
+                create: {
+                    type: 'POST',
+                    url: '/create_employee',
+                }
+            },
+            table: '#employee_table',
+            fields: [
+                { label: 'Employee ID', name: 'EmployeeID' },
+                { label: 'First Name', name: 'FirstName' },
+                { label: 'Last Name', name: 'LastName' }
+            ]
         });
+
+        var toolTable = $('#tool_table').DataTable({
+            processing: true,
+            serverSide: true,
+            serverMethod: 'post',
+            ajax: {
+                'url': '/ajaxemployees'
+            },
+            searching: true,
+            sort: false,
+            serverSide: true,
+            columns: [
+                { data: 'EmployeeID'},
+                { data: 'FirstName'},
+                { data: 'LastName'}
+            ],
+            layout: {
+                topStart: {
+                    buttons: [
+                        { extend: 'create', editor: editor },
+                        { extend: 'edit', editor: editor },
+                        { extend: 'remove', editor: editor }
+                    ]
+                }
+            }
+        });
+    });
     </script>
 {% endblock %}
