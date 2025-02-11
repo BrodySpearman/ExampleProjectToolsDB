@@ -4,24 +4,12 @@
       <meta charset="UTF-8">
       <title>Stateline Electic Parts Database Veiwer</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
-
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-      <script src="https://requirejs.org/docs/release/2.3.7/minified/require.js" type="module"></script>
-      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-      <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
- 
-      <link rel="stylesheet" href="../static\Lib\Datatables\datatables.min.css">
-      <script src="../static\Lib\Datatables\datatables.min.js"></script>
-
-      <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+      {% block stylesheets %}{% endblock %}
+      {% block scripts %}{% endblock %}
     </head>
     
     <body>
       <div class="container-fluid toppage">
-
         <h2>Parts Database</h2>
   
         <div style="text-align:center;">
@@ -29,8 +17,6 @@
         </div>
   
         <button type="button" id="add-record-btn" class="btn btn-secondary pull-right" data-toggle="modal" data-target="#add-record-modal">Add records</button>
-        {% include "modal.html" %}
-
       </div>
       
       <div class="container-fluid tab_bar">

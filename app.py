@@ -9,7 +9,6 @@ from sqlalchemy.sql import func
 from jinja2 import Template
 from flaskext.mysql import MySQL
 import pymysql
-import json
 
 # Flask command line operation (Windows):
 # set FLASK_APP=app
