@@ -201,27 +201,43 @@ def create_new_tool():
         cursor.close()
         conn.close()
 
-@app.route('/delete_tool/<int:_id_>', methods = ['DELETE'])
+@app.route('/delete_tool/<_id_>', methods = ['DELETE'])
 def delete_tool(_id_):
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         if request.method == 'DELETE':
-            data = request.form.to_dict(flat=True)
-            print(data)
 
-            cursor.execute(f"DELETE FROM tool WHERE ToolID = {_id_}")
-            conn.commit()
+            if "," in _id_: # If multiple ids are passed.
+                id_list = [int(x) for x in _id_.split(",")]
+                data = request.form.to_dict(flat=True)
+                print(id_list)
 
-            response = { }
-            print('Record deleted.')
-            return jsonify(response)
+                for id in id_list:
+                    cursor.execute(f"DELETE FROM tool WHERE ToolID = {id}")
+                    conn.commit()
+                response = { }
+                print('Records deleted.')
+                return jsonify(response)
+
+            else:
+                data = request.form.to_dict(flat=True)
+                print(data)
+
+                cursor.execute(f"DELETE FROM tool WHERE ToolID = {int(_id_)}")
+                conn.commit()
+
+                response = { }
+                print('Record deleted.')
+                return jsonify(response)
     
     except Exception as e:
         print(e)
     finally:
         cursor.close()
         conn.close()
+
+
 
 @app.route('/checkouts', methods = ['GET', 'POST'])
 def checkout_table_show():
@@ -236,6 +252,7 @@ def ajaxcheckouts():
 def add_checkout():
     pass
 
+
 @app.route('/employees', methods = ['GET', 'POST'])
 def employee_table_show():
     employee_table_cols = get_col_names('employee')
@@ -245,14 +262,14 @@ def employee_table_show():
 def ajaxemployees():
     return draw_table('employee')
 
-@app.route('/add_employee', methods = ['GET', 'POST'])
-def add_employee():
+@app.route('/create_employee', methods = ['GET', 'POST'])
+def create_new_employee():
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         if request.method == 'POST':
+            print(request.form)
             data = request.form.to_dict(flat=True)
-            print(data)
 
             cursor.execute(f"""INSERT INTO employee (EmployeeID, FirstName, LastName) 
                             VALUES 
@@ -273,6 +290,42 @@ def add_employee():
 
             return jsonify(response)
 
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
+
+@app.route('/delete_employee/<_id_>', methods = ['DELETE'])
+def delete_employee(_id_):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        if request.method == 'DELETE':
+
+            if "," in _id_: # If multiple ids are passed.
+                id_list = [int(x) for x in _id_.split(",")]
+                data = request.form.to_dict(flat=True)
+                print(id_list)
+
+                for id in id_list:
+                    cursor.execute(f"DELETE FROM employee WHERE EmployeeID = {id}")
+                    conn.commit()
+                response = { }
+                print('Records deleted.')
+                return jsonify(response)
+
+            else:
+                data = request.form.to_dict(flat=True)
+                print(data)
+
+                cursor.execute(f"DELETE FROM employee WHERE EmployeeID = {int(_id_)}")
+                conn.commit()
+
+                response = { }
+                print('Record deleted.')
+                return jsonify(response)
+    
     except Exception as e:
         print(e)
     finally:

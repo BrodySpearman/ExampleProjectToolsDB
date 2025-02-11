@@ -3,7 +3,7 @@
     <table id="employee_table" class="display display_table">
         <thead>
             <tr>
-                {% for name in get_table_info.columns %}
+                {% for name in employee_table_cols %}
                     <th>{{ name }}</th>
                 {% endfor %}
             </tr>
@@ -16,17 +16,23 @@
                 create: {
                     type: 'POST',
                     url: '/create_employee',
+                },
+                remove: {
+                    type: 'DELETE',
+                    url: '/delete_employee/_id_', // _id_ is the id of the row to be deleted
+                    deleteBody: false
                 }
             },
             table: '#employee_table',
+            idSrc: 'EmployeeID',
             fields: [
-                { label: 'Employee ID', name: 'EmployeeID' },
-                { label: 'First Name', name: 'FirstName' },
-                { label: 'Last Name', name: 'LastName' }
+                { label: 'EmployeeID', name: 'EmployeeID' },
+                { label: 'FirstName', name: 'FirstName' },
+                { label: 'LastName', name: 'LastName' }
             ]
         });
 
-        var toolTable = $('#tool_table').DataTable({
+        var employee_table = $('#employee_table').DataTable({
             processing: true,
             serverSide: true,
             serverMethod: 'post',
@@ -49,7 +55,8 @@
                         { extend: 'remove', editor: editor }
                     ]
                 }
-            }
+            },
+            select: true,
         });
     });
     </script>
