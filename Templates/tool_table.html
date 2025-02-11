@@ -15,11 +15,16 @@
             ajax: {
                 create: {
                     type: 'POST',
-                    url: '/create_new_tool',
-                    
+                    url: '/create_tool',
+                    },
+                remove: {
+                    type: 'DELETE',
+                    url: '/delete_tool/_id_', // _id_ is the id of the row to be deleted
+                    deleteBody: false
                 }
             },
             table: '#tool_table',
+            idSrc: 'ToolID',
             fields: [
                 { label: 'ToolID', name: 'ToolID' },
                 { label: 'Type', name: 'Type' },
@@ -58,8 +63,10 @@
                         { extend: 'remove', editor: editor }
                     ]
                 }
-            }
+            },
+            select: true
         });
     });
+
     </script>
 {% endblock %}

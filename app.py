@@ -157,7 +157,7 @@ def ajaxtools():
     return draw_table('tool')
 
 # Called through tool_table.html
-@app.route('/create_new_tool', methods = ['GET', 'POST'])
+@app.route('/create_tool', methods = ['GET', 'POST'])
 def create_new_tool():
     try:
         conn = mysql.connect()
@@ -201,6 +201,28 @@ def create_new_tool():
         cursor.close()
         conn.close()
 
+@app.route('/delete_tool/<int:_id_>', methods = ['DELETE'])
+def delete_tool(_id_):
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        if request.method == 'DELETE':
+            data = request.form.to_dict(flat=True)
+            print(data)
+
+            cursor.execute(f"DELETE FROM tool WHERE ToolID = {_id_}")
+            conn.commit()
+
+            response = { }
+            print('Record deleted.')
+            return jsonify(response)
+    
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
+
 @app.route('/checkouts', methods = ['GET', 'POST'])
 def checkout_table_show():
     checkout_table_cols = get_col_names('checkout')
@@ -210,6 +232,10 @@ def checkout_table_show():
 def ajaxcheckouts():
     return draw_table('checkout')
 
+@app.route('/add_checkout', methods = ['GET', 'POST'])
+def add_checkout():
+    pass
+
 @app.route('/employees', methods = ['GET', 'POST'])
 def employee_table_show():
     employee_table_cols = get_col_names('employee')
@@ -218,6 +244,40 @@ def employee_table_show():
 @app.route('/ajaxemployees', methods = ['GET', 'POST'])
 def ajaxemployees():
     return draw_table('employee')
+
+@app.route('/add_employee', methods = ['GET', 'POST'])
+def add_employee():
+    try:
+        conn = mysql.connect()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        if request.method == 'POST':
+            data = request.form.to_dict(flat=True)
+            print(data)
+
+            cursor.execute(f"""INSERT INTO employee (EmployeeID, FirstName, LastName) 
+                            VALUES 
+                            ({str(data['data[0][EmployeeID]'])},
+                            '{str(data['data[0][FirstName]'])}',
+                            '{str(data['data[0][LastName]'])}')""")
+            conn.commit()
+            
+            new_data = {
+                'EmployeeID': data['data[0][EmployeeID]'],
+                'FirstName': data['data[0][FirstName]'],
+                'LastName': data['data[0][LastName]']
+            }
+
+            response = {
+                'data': new_data
+            }
+
+            return jsonify(response)
+
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        conn.close()
 
 
 if __name__ == '__main__':
