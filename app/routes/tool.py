@@ -1,15 +1,15 @@
 from flask import Blueprint, render_template, request, jsonify
-from app.models import get_col_names, engine, draw_table
+from ..models import get_col_names, engine, draw_table
 import pymysql.cursors
-from __init__ import mysql
+from ..__init__ import mysql
 
-tool_table_bp = Blueprint('tool_table', __name__, 
+tool_table_bp = Blueprint('tool_table_bp', __name__, 
                             static_folder='static', 
                             template_folder='templates')
 
 @tool_table_bp.route('/tools', methods=('GET', 'POST'))
 def tools():
-    tool_table_cols = get_col_names(engine, 'tool')
+    tool_table_cols = get_col_names('tool')
     return render_template('tool_table.html', tool_table_cols=tool_table_cols)
 
 @tool_table_bp.route('/ajaxtools', methods = ['GET', 'POST'])

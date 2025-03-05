@@ -1,14 +1,14 @@
 from flask import Blueprint, render_template, request, jsonify
-from app.models import get_col_names, engine, draw_table
+from ..models import get_col_names, draw_table
 import pymysql.cursors
-from __init__ import mysql
+from ..__init__ import mysql
 
-employee_table_bp = Blueprint('employee_table', __name__,
+employee_table_bp = Blueprint('employee_table_bp', __name__,
                                 static_folder='static',
                                 template_folder='templates')
 
 @employee_table_bp.route('/employees', methods = ['GET', 'POST'])
-def employee_table_show():
+def employees():
     employee_table_cols = get_col_names('employee')
     return render_template('employee_table.html', employee_table_cols=employee_table_cols)
 

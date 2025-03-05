@@ -1,13 +1,13 @@
-from config import Config
-from __init__ import mysql
-from flask import request, jsonify
+from app.config import Config
+from app import mysql
+from flask import request, jsonify, Blueprint
 from sqlalchemy import create_engine, MetaData, Table, text
+from app import engine
 import pymysql.cursors
 
-engine = create_engine(
-    url="mysql+mysqlconnector://{0}:{1}@{2}:{3}/{4}".format(
-        Config.dbuser, Config.dbpass, Config.dbhost, Config.port, Config.dbname
-    ), echo=True)
+models_bp = Blueprint('models', __name__,
+                        static_folder='static',
+                        template_folder='templates')
 
 avail_tables = ['tool', 'employee', 'checkout']
 metadata_obj = MetaData(schema='stateline_tools_db')
@@ -29,10 +29,6 @@ checkout_table = Table(
     metadata_obj,
     autoload_with=engine
 )
-
-def init_db(app):
-    mysql.init_app(app)
-
 
 ### TABLE FUNCTIONS ###
 
