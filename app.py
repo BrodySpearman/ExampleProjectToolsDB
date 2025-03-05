@@ -62,7 +62,6 @@ checkout_table = Table(
     autoload_with=engine
 )
 
-
 ### TABLE FUNCTIONS ###
 
 # Get the column names of a table (tblnme). 
