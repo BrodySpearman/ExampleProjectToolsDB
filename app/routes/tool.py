@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from ..models import get_col_names, engine, draw_table
+from ..models import get_col_names, draw_table
 import pymysql.cursors
 from ..__init__ import mysql
 

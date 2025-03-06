@@ -45,23 +45,41 @@ def get_col_names(tblnme):
     conn.close()
     return columns
 
-# Retrieve data from db and draw table on the client side.
+# Retrieve data from the database and draw on client side.
 def draw_table(tblenme):
     try:
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         if request.method == 'POST':
             draw = request.form['draw']
+            searchVal = request.form["search[value]"]
+
+            print(searchVal)
             print(draw)
 
+            # No filtering
             cursor.execute(f"SELECT * FROM {tblenme}")
             datalist = cursor.fetchall()
             record_count = cursor.rowcount
-            tblclms = get_col_names(tblenme)
 
+            tblclms = get_col_names(tblenme) # Collects list of column names 
             data = []
 
+            # User input search value.
+            like_string = f"\"%{searchVal}%\""
+
             if tblenme == 'tool':
+                # Search filtered list
+                if searchVal:
+                    query = (f"SELECT * FROM {tblenme} WHERE "
+                             f"ToolID LIKE {like_string} OR "
+                             f"ToolName LIKE {like_string} OR "
+                             f"Brand LIKE {like_string} OR "
+                             f"Description LIKE {like_string};").replace('\n', '')
+                    
+                    cursor.execute(query)
+                    datalist = cursor.fetchall()
+
                 for row in datalist:
                     data.append({
                         tblclms[0]: row[tblclms[0]],
@@ -74,7 +92,6 @@ def draw_table(tblenme):
                     })
             
             if tblenme == 'employee':
-
                 for row in datalist:
                     data.append({
                         tblclms[0]: row[tblclms[0]],

@@ -15,7 +15,7 @@ def create_app(config_class=Config):
     app.config['MYSQL_DATABASE_DB'] = config_class.DBNAME
     app.config['MYSQL_DATABASE_HOST'] = config_class.DBHOST
     mysql.init_app(app)
-
+    
     from .routes.base import base_bp
     app.register_blueprint(base_bp)
 
