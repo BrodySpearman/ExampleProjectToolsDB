@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env file in statelineDB/app/db_info.env
-load_dotenv('app\db_info.env')
+load_dotenv(r'app\db_info.env')
 
 class Config(object):
     DBHOST = os.getenv('DBHOST')

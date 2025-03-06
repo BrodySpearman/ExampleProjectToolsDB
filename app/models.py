@@ -1,7 +1,6 @@
-from app.config import Config
 from app import mysql
 from flask import request, jsonify, Blueprint
-from sqlalchemy import create_engine, MetaData, Table, text
+from sqlalchemy import MetaData, Table, text
 from app import engine
 import pymysql.cursors
 
@@ -57,6 +56,7 @@ def draw_table(tblenme):
 
             cursor.execute(f"SELECT * FROM {tblenme}")
             datalist = cursor.fetchall()
+            record_count = cursor.rowcount
             tblclms = get_col_names(tblenme)
 
             data = []
@@ -74,6 +74,7 @@ def draw_table(tblenme):
                     })
             
             if tblenme == 'employee':
+
                 for row in datalist:
                     data.append({
                         tblclms[0]: row[tblclms[0]],
@@ -93,8 +94,8 @@ def draw_table(tblenme):
             
             response = {
                 'draw': draw,
-                'iTotalRecords': 20,
-                'iTotalDisplayRecords': 20,
+                'iTotalRecords': record_count,
+                'iTotalDisplayRecords': record_count,
                 'aaData': data
             }
             

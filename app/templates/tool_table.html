@@ -1,72 +1,72 @@
 {% extends "base.html" %}
 {% block table %}
-    <table id="tool_table" class="display display_table">
-        <thead>
-            <tr>
-                {% for col in tool_table_cols %}
-                    <th>{{ col }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-    </table>
-    <script>       
-    $(document).ready(function() {
-        var editor = new $.fn.dataTable.Editor({
-            ajax: {
-                create: {
-                    type: 'POST',
-                    url: '/create_tool',
-                    },
-                remove: {
-                    type: 'DELETE',
-                    url: '/delete_tool/_id_', // _id_ is the id of the row to be deleted
-                    deleteBody: false
-                }
-            },
-            table: '#tool_table',
-            idSrc: 'ToolID',
-            fields: [
-                { label: 'ToolID', name: 'ToolID' },
-                { label: 'Type', name: 'Type' },
-                { label: 'ToolName', name: 'ToolName' },
-                { label: 'Brand', name: 'Brand' },
-                { label: 'SKU', name: 'SKU' },
-                { label: 'SerialNum', name: 'SerialNum' },
-                { label: 'Description', name: 'Description' }
-            ]
-        });
-
-        var toolTable = $('#tool_table').DataTable({
-            processing: true,
-            serverSide: true,
-            serverMethod: 'post',
-            ajax: {
-                'url': '/ajaxtools'
-            },
-            searching: true,
-            sort: false,
-            serverSide: true,
-            columns: [
-                { data: 'ToolID'},
-                { data: 'Type'},
-                { data: 'ToolName'},
-                { data: 'Brand'},
-                { data: 'SKU'},
-                { data: 'SerialNum'},
-                { data: 'Description'}
-            ],
-            layout: {
-                topStart: {
-                    buttons: [
-                        { extend: 'create', editor: editor },
-                        { extend: 'edit', editor: editor },
-                        { extend: 'remove', editor: editor }
-                    ]
-                }
-            },
-            select: true
-        });
+<table id="tool_table" class="display display_table">
+    <thead>
+        <tr>
+            {% for col in tool_table_cols %}
+                <th>{{ col }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+</table>
+<script>       
+$(document).ready(function() {
+    var editor = new $.fn.dataTable.Editor({
+        ajax: {
+            create: {
+                type: 'POST',
+                url: '/create_tool',
+                },
+            remove: {
+                type: 'DELETE',
+                url: '/delete_tool/_id_', // _id_ is the id of the row to be deleted
+                deleteBody: false
+            }
+        },
+        table: '#tool_table',
+        idSrc: 'ToolID',
+        fields: [
+            { label: 'ToolID', name: 'ToolID' },
+            { label: 'Type', name: 'Type' },
+            { label: 'ToolName', name: 'ToolName' },
+            { label: 'Brand', name: 'Brand' },
+            { label: 'SKU', name: 'SKU' },
+            { label: 'SerialNum', name: 'SerialNum' },
+            { label: 'Description', name: 'Description' }
+        ]
     });
 
-    </script>
+    var toolTable = $('#tool_table').DataTable({
+        processing: true,
+        serverSide: true,
+        serverMethod: 'post',
+        ajax: {
+            'url': '/ajaxtools'
+        },
+        searching: true,
+        sort: false,
+        serverSide: true,
+        columns: [
+            { data: 'ToolID'},
+            { data: 'Type'},
+            { data: 'ToolName'},
+            { data: 'Brand'},
+            { data: 'SKU'},
+            { data: 'SerialNum'},
+            { data: 'Description'}
+        ],
+        layout: {
+            topStart: {
+                buttons: [
+                    { extend: 'create', editor: editor },
+                    { extend: 'edit', editor: editor },
+                    { extend: 'remove', editor: editor }
+                ]
+            }
+        },
+        select: true
+    });
+});
+
+</script>
 {% endblock %}

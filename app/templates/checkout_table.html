@@ -1,29 +1,63 @@
 {% extends 'base.html' %}
 {% block table %}
-    <table id="checkout_table" class="display display_table">
-        <thead>
-            <tr>
-                {% for name in get_table_info.columns %}
-                    <th>{{ name }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in get_table_info.dataset %}
-                <tr>
-                    <td>{{ row.CheckoutNum }}</td>
-                    <td>{{ row.CheckoutDate }}</td>
-                    <td>{{ row.EmployeeID }}</td>
-                    <td>{{ row.ToolID }}</td>
-                    <td>{{ row.ToolName }}</td>
-                </tr>
+<table id="checkout_table" class="display display_table">
+    <thead>
+        <tr>
+            {% for col in checkout_table_cols %}
+                <th>{{ col }}</th>
             {% endfor %}
-            </tr>
-        </tbody>
-    </table>
-    <script>
-        $(document).ready(function() {
-            $("#checkout_table").DataTable();
-        });
-    </script>
+        </tr>
+    </thead>
+</table>
+<script>
+$(document).ready(function() {
+    var editor = new $.fn.dataTable.Editor({
+        ajax: {
+            remove: {
+                type: 'DELETE',
+                url: '/delete_checkout/_id_', // _id_ is the id of the row to be deleted
+                deleteBody: false
+            }
+        },
+        table: '#checkout_table',
+        idSrc: 'CheckoutID',
+        fields: [
+            { label: 'CheckoutNum', name: 'CheckoutNum' },
+            { label: 'CheckoutDate', name: 'CheckoutDate' },
+            { label: 'EmployeeID', name: 'EmployeeID' },
+            { label: 'ToolID', name: 'ToolID' },
+            { label: 'ToolName', name: 'ToolName' }
+        ]
+    });
+
+    var checkoutTable = $('#checkout_table').DataTable({
+        processing: true,
+        serverSide: true,
+        serverMethod: 'post',
+        ajax: {
+            'url': '/ajaxcheckouts'
+        },
+        searching: true,
+        sort: false,
+        serverSide: true,
+        columns: [
+            { data: 'CheckoutNum'},
+            { data: 'CheckoutDate'},
+            { data: 'EmployeeID'},
+            { data: 'ToolID'},
+            { data: 'ToolName'}
+        ],
+        layout: {
+            topStart: {
+                buttons: [
+                    { extend: 'create', editor: editor },
+                    { extend: 'edit', editor: editor },
+                    { extend: 'remove', editor: editor }
+                ]
+            }
+        },
+        select: true
+    });
+});
+</script>
 {% endblock %}

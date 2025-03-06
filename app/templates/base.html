@@ -11,12 +11,10 @@
     <body>
       <div class="container-fluid toppage">
         <h2>Parts Database</h2>
-  
         <div style="text-align:center;">
           <img src="/static/images/Bullet_Logo_Head.png" class="img-responsive"/>
-        </div>
-  
-        <button type="button" id="add-record-btn" class="btn btn-secondary pull-right" data-toggle="modal" data-target="#add-record-modal">Add records</button>
+        </div> 
+        <button type="button" id="add-record-btn" class="btn btn-secondary pull-right" data-toggle="modal" data-target="#add-record-modal">Login</button>
       </div>
       
       <div class="container-fluid tab_bar">
@@ -25,21 +23,17 @@
           <li class="nav-item" role="presentation">
             <a class="nav-link" id="tools" data-bs-toggle="pill" aria-controls="tool_view" aria-selected="false" href="{{url_for('tool_table_bp.tools')}}">Tools</a>
           </li>
-  
           <li class="nav-item" role="presentation">
             <a class="nav-link" id="checkout" data-bs-toggle="pill" aria-controls="checkout_view" aria-selected="false" href="{{url_for('checkout_table_bp.checkouts')}}">Checkout</a>
           </li>
-  
           <li class="nav-item" role="presentation">
             <a class="nav-link" id="employees" data-bs-toggle="pill" aria-controls="employee_view" aria-selected="false" href="{{url_for('employee_table_bp.employees')}}">Employees</a>
           </li>
           
         </ul>
       </div>
-
       <div class="container-fluid table" id="main-table">
         {% block table %}{% endblock %}
       </div>
-
     </body>
 </html>
