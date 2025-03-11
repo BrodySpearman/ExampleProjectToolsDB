@@ -25,13 +25,10 @@ def create_new_employee():
             print(request.form)
             data = request.form.to_dict(flat=True)
 
-            cursor.execute(f"""INSERT INTO employee (EmployeeID, FirstName, LastName) 
-                            VALUES 
-                            ({str(data['data[0][EmployeeID]'])},
-                            '{str(data['data[0][FirstName]'])}',
-                            '{str(data['data[0][LastName]'])}')""")
+            cmd = "INSERT INTO employee (EmployeeID, FirstName, LastName) VALUES (%s, %s, %s)"
+            cursor.execute(cmd, (data['data[0][EmployeeID]'], data['data[0][FirstName]'], data['data[0][LastName]']))
             conn.commit()
-            
+
             new_data = {
                 'EmployeeID': data['data[0][EmployeeID]'],
                 'FirstName': data['data[0][FirstName]'],
@@ -63,7 +60,8 @@ def delete_employee(_id_):
                 print(id_list)
 
                 for id in id_list:
-                    cursor.execute(f"DELETE FROM employee WHERE EmployeeID = {id}")
+                    cmd = "DELETE FROM employee WHERE EmployeeID = %s"
+                    cursor.execute(cmd, (id))
                     conn.commit()
                 response = { }
                 print('Records deleted.')
@@ -73,7 +71,8 @@ def delete_employee(_id_):
                 data = request.form.to_dict(flat=True)
                 print(data)
 
-                cursor.execute(f"DELETE FROM employee WHERE EmployeeID = {int(_id_)}")
+                cmd = "DELETE FROM employee WHERE EmployeeID = %s"
+                cursor.execute(cmd, (_id_))
                 conn.commit()
 
                 response = { }

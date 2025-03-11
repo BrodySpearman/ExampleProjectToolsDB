@@ -11,6 +11,7 @@
 </table>
 <script>       
 $(document).ready(function() {
+    // Editor
     var editor = new $.fn.dataTable.Editor({
         ajax: {
             create: {
@@ -19,7 +20,7 @@ $(document).ready(function() {
                 },
             remove: {
                 type: 'DELETE',
-                url: '/delete_tool/_id_', // _id_ is the id of the row to be deleted
+                url: '/delete_tool/_id_', // _id_ is the unique id of the row to be deleted
                 deleteBody: false
             }
         },
@@ -27,15 +28,53 @@ $(document).ready(function() {
         idSrc: 'ToolID',
         fields: [
             { label: 'ToolID', name: 'ToolID' },
-            { label: 'Type', name: 'Type' },
-            { label: 'ToolName', name: 'ToolName' },
-            { label: 'Brand', name: 'Brand' },
-            { label: 'SKU', name: 'SKU' },
-            { label: 'SerialNum', name: 'SerialNum' },
-            { label: 'Description', name: 'Description' }
+            { label: 'Type', name: 'Type', attr: { maxlength: "30" }},
+            { label: 'ToolName', name: 'ToolName', attr: { maxlength: "40" }} ,
+            { label: 'Brand', name: 'Brand', attr: {maxlength: "30"}},
+            { label: 'SKU', name: 'SKU', attr: {maxlength: "12"} },
+            { label: 'SerialNum', name: 'SerialNum', attr: {maxlength: "30"} },
+            { label: 'Description', name: 'Description', attr: {maxlength: "240"} }
         ]
     });
 
+    // Client-side Validator
+    editor.on('preSubmit', function (e, o, action) {
+        if (action !== 'remove') {
+            var type = this.field('Type')
+            var toolName = this.field('ToolName')
+            var brand = this.field('Brand')
+            var sku = this.field('SKU')
+            var serialNum = this.field('SerialNum')
+            var desc = this.field('Description')
+
+            // Validation Rules
+            if (!type.isMultiValue() || !toolName.isMultiValue() || 
+                !brand.isMultiValue() || !sku.isMultiValue() || 
+                !serialNum.isMultiValue()) {
+                    if (!type.val()) {
+                        type.error('Type is required');
+                    }
+                    if (!toolName.val()) {
+                        toolName.error('Tool Name is required');
+                    }
+                    if (!brand.val()) {
+                        brand.error('Brand is required');
+                    }
+                    if (!sku.val()) {
+                        sku.error('SKU is required');
+                    }
+                    if (!serialNum.val()) {
+                        serialNum.error('Serial Number is required');
+                    }
+            }
+
+            if (this.inError()) {
+                return false;
+            }
+        }
+    });
+
+    // DataTable
     var toolTable = $('#tool_table').DataTable({
         processing: true,
         serverSide: true,
@@ -45,6 +84,7 @@ $(document).ready(function() {
         },
         searching: true,
         sort: false,
+        ordering: true,
         serverSide: true,
         columns: [
             { data: 'ToolID'},

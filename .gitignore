@@ -1,1 +1,5 @@
 app/db_info.env
+app/routes/__pycache__/employee.cpython-313.pyc
+app/routes/__pycache__/tool.cpython-313.pyc
+app/__pycache__/__init__.cpython-313.pyc
+app/__pycache__/models.cpython-313.pyc

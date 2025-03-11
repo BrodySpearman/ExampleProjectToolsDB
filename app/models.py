@@ -47,9 +47,9 @@ def get_col_names(tblnme):
 
 # Retrieve data from the database and draw on client side.
 def draw_table(tblenme):
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
     try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
         if request.method == 'POST':
             draw = request.form['draw']
             searchVal = request.form["search[value]"]
@@ -80,6 +80,7 @@ def draw_table(tblenme):
                     cursor.execute(query)
                     datalist = cursor.fetchall()
 
+                # final data formatting
                 for row in datalist:
                     data.append({
                         tblclms[0]: row[tblclms[0]],
@@ -92,6 +93,16 @@ def draw_table(tblenme):
                     })
             
             if tblenme == 'employee':
+                # Search filtered list
+                if searchVal:
+                    query = (f"SELECT * FROM {tblenme} WHERE "
+                             f"EmployeeID LIKE {like_string} OR "
+                             f"FirstName LIKE {like_string} OR "
+                             f"LastName LIKE {like_string};").replace('\n', '')
+
+                    cursor.execute(query)
+                    datalist = cursor.fetchall()
+
                 for row in datalist:
                     data.append({
                         tblclms[0]: row[tblclms[0]],
@@ -100,6 +111,15 @@ def draw_table(tblenme):
                     })
 
             if tblenme == 'checkout':
+                # Search filtered list
+                if searchVal:
+                    query = (f"SELECT * FROM {tblenme} WHERE "
+                             f"CheckoutNum LIKE {like_string} OR "
+                             f"EmployeeID LIKE {like_string} OR "
+                             f"ToolName LIKE {like_string};").replace('\n', '')
+                    cursor.execute(query)
+                    datalist = cursor.fetchall()
+                    
                 for row in datalist:
                     data.append({
                         tblclms[0]: row[tblclms[0]],
@@ -116,6 +136,7 @@ def draw_table(tblenme):
                 'aaData': data
             }
             
+            print(response)
             return jsonify(response)
 
     except Exception as e:
@@ -123,3 +144,31 @@ def draw_table(tblenme):
     finally:
         cursor.close()
         conn.close()
+
+def strip_whitespace(data):
+    for val in data.values():
+        if isinstance(val, str):
+            val = val.replace('/n', '').strip()
+    return data
+
+def validate_tool(data):
+    special_chars = '!@#$%^&*()_+-=[]{}|;:,.<>/?\\'
+    validate_list = {
+        data['data[0][ToolName]']: "ToolName",
+        data['data[0][Type]']: "Type",
+        data['data[0][Brand]']: "Brand", 
+        data['data[0][SKU]']: "SKU",
+        data['data[0][SerialNum]']: "SerialNum"
+        }
+    
+    errors = []
+    for input, field in validate_list:
+        if special_chars in input:
+            item_error = {
+                "name": field,
+                "status": "Field cannot contain special characters."
+            }
+            errors.append(item_error)
+    
+    return {errors}
+    

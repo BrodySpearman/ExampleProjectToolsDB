@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify
-from ..models import get_col_names, draw_table
+from ..models import get_col_names, draw_table, strip_whitespace, validate_tool
 import pymysql.cursors
-from ..__init__ import mysql
+from app import mysql
 
 tool_table_bp = Blueprint('tool_table_bp', __name__, 
                             static_folder='static', 
@@ -18,27 +18,28 @@ def ajaxtools():
 
 @tool_table_bp.route('/create_tool', methods = ['GET', 'POST'])
 def create_new_tool():
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
     try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
         if request.method == 'POST':
+            raw_data = request.form.to_dict(flat=True)
             # Client form example (ImmutableMultiDict):
-            # ([('data[0][Type]', 'value'), ('data[0][ToolName]', 'value'), ('data[0][Brand]', 'value'), ('data[0][SKU]', 'value'), ('data[0][SerialNum]', 'value'), ('data[0][Description]', 'value'), ('action', 'create')])
-            data = request.form.to_dict(flat=True)
-            print(data)
-
-            cursor.execute(f"""INSERT INTO tool (ToolID, Type, ToolName, Brand, SKU, SerialNum, Description) 
-                            VALUES 
-                            ({str(data['data[0][ToolID]'])},
-                            '{str(data['data[0][Type]'])}',
-                            '{str(data['data[0][ToolName]'])}',
-                            '{str(data['data[0][Brand]'])}',
-                            '{str(data['data[0][SKU]'])}',
-                            '{str(data['data[0][SerialNum]'])}',
-                            '{str(data['data[0][Description]'])}')""")
-            conn.commit()
+            # ([('data[0][ToolID]', 'value'), ('data[0][Type]', 'value'), ('data[0][ToolName]', 'value'), 
+            # ('data[0][Brand]', 'value'), ('data[0][SKU]', 'value'), ('data[0][SerialNum]', 'value'), 
+            # ('data[0][Description]', 'value'), ('action', 'create')]
             
-            new_data = {
+            # Validating client data
+            data = strip_whitespace(raw_data)
+            validation = validate_tool(data)
+
+            print(data)
+            cmd = "INSERT INTO tool (ToolID, Type, ToolName, Brand, SKU, SerialNum, Description) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(cmd, (data['data[0][ToolID]'], data['data[0][Type]'], data['data[0][ToolName]'],
+                                 data['data[0][Brand]'], data['data[0][SKU]'], data['data[0][SerialNum]'],
+                                 data['data[0][Description]']))
+            conn.commit()
+
+            response_data = {
                 'ToolID': data['data[0][ToolID]'],
                 'Type': data['data[0][Type]'],
                 'ToolName': data['data[0][ToolName]'],
@@ -49,11 +50,10 @@ def create_new_tool():
             }
 
             response = {
-                'data': new_data
+                'data': response_data
             }
 
             return jsonify(response)
-
     except Exception as e:
         print(e)
     finally:
@@ -62,9 +62,9 @@ def create_new_tool():
 
 @tool_table_bp.route('/delete_tool/<_id_>', methods = ['DELETE'])
 def delete_tool(_id_):
+    conn = mysql.connect()
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
     try:
-        conn = mysql.connect()
-        cursor = conn.cursor(pymysql.cursors.DictCursor)
         if request.method == 'DELETE':
 
             if "," in _id_: # If multiple ids are passed.
@@ -73,7 +73,8 @@ def delete_tool(_id_):
                 print(id_list)
 
                 for id in id_list:
-                    cursor.execute(f"DELETE FROM tool WHERE ToolID = {id}")
+                    cmd = "DELETE FROM tool WHERE ToolID = %s"
+                    cursor.execute(cmd, (id))
                     conn.commit()
                 response = { }
                 print('Records deleted.')
@@ -83,7 +84,8 @@ def delete_tool(_id_):
                 data = request.form.to_dict(flat=True)
                 print(data)
 
-                cursor.execute(f"DELETE FROM tool WHERE ToolID = {int(_id_)}")
+                cmd = "DELETE FROM tool WHERE ToolID = %s"
+                cursor.execute(cmd, (_id_))
                 conn.commit()
 
                 response = { }

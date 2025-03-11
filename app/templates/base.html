@@ -14,7 +14,6 @@
         <div style="text-align:center;">
           <img src="/static/images/Bullet_Logo_Head.png" class="img-responsive"/>
         </div> 
-        <button type="button" id="add-record-btn" class="btn btn-secondary pull-right" data-toggle="modal" data-target="#add-record-modal">Login</button>
       </div>
       
       <div class="container-fluid tab_bar">
@@ -28,6 +27,9 @@
           </li>
           <li class="nav-item" role="presentation">
             <a class="nav-link" id="employees" data-bs-toggle="pill" aria-controls="employee_view" aria-selected="false" href="{{url_for('employee_table_bp.employees')}}">Employees</a>
+          </li>
+          <li class="nav-item pull-right login" role="presentation">
+            <a class="nav-link" id="admin-login" data-bs-toggle="pill" aria-controls="admin_view" aria-selected="false" href="">Admin Login</a>
           </li>
           
         </ul>
